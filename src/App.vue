@@ -13,6 +13,10 @@
         :state="item.goods_state" 
         :count="item.goods_count"
         v-for="item in list" :key="item.id">
+        <Counter :num="item.goods_count" 
+        @num-change-add="getAddNewNum(item, $event)"
+        @num-change-sub="getSubNewNum(item, $event)">
+        </Counter>
         </Goods>
         <!-- 底部区域 -->
         <Footer :isFull="fullState" :zongjia="total" :zongshu="sum" @full-change="getFullState"></Footer>
@@ -27,16 +31,18 @@ import axios from 'axios'
 import Footer from './components/Footer/Footer.vue'
 import Goods from './components/Goods/Goods.vue'
 import Header from './components/Header/Header.vue'
+import Counter from './components/Counter/Counter.vue'
 
 //导入eventBus
-import bus from './components/eventBus.js'
+// import bus from './components/eventBus.js'
 
 export default {
     //注册导入的组件
     components: {
         Footer,
         Goods,
-        Header
+        Header,
+        Counter
     },
     data() {
         return {
@@ -68,21 +74,29 @@ export default {
         getFullState(val) {
             //循环商品每一项数据,并将全选按钮的状态赋值给每一项的复选框状态
             this.list.forEach(item => item.goods_state = val);
+        },
+        //获取Counter组件传递过来的最新的值
+        getAddNewNum(item, val) {
+            item.goods_count = val;
+        },
+        getSubNewNum(item, val) {
+            if(item.goods_count == 1) return;
+            item.goods_count = val;
         }
     },
     created() {
         //调用axios请求获取服务器端的数据
         this.initCarList();
         //接收兄弟组件传递过来的数据
-        bus.$on('share', val => {
-            this.list.some(item => {
-                if(item.id == val.id) {
-                    item.goods_count = val.value;
-                    return true;
-                }
-            })
-        });
-        bus.$on('subCount',);
+        // bus.$on('share', val => {
+        //     this.list.some(item => {
+        //         if(item.id == val.id) {
+        //             item.goods_count = val.value;
+        //             return true;
+        //         }
+        //     })
+        // });
+        // bus.$on('subCount',);
     },
     computed: {
         //动态计算出全选的状态是true还是false

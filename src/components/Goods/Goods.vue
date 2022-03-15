@@ -19,7 +19,9 @@
                 <!-- 商品价格 -->
                 <span class="goods-price">￥{{ price }}</span>
                 <!-- 商品数量 -->
-                <Counter :num="count" :id="id"></Counter>
+                <!-- <Counter :num="count" :id="id"></Counter> -->
+                <!-- 采用插槽的形式 -->
+                <slot></slot>
             </div>
         </div>
     </div>

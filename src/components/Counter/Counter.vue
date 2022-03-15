@@ -11,7 +11,7 @@
 
 <script>
 //当组件嵌套时,且相隔较远时可以认为是兄弟组件eventBus
-import bus from '../eventBus.js'
+// import bus from '../eventBus.js'
 
 export default {
     props: {
@@ -21,20 +21,29 @@ export default {
             type: Number
         },
         //接收商品的id,使用eventBus方案通知App组件根据id更新商品数量
-        id: {
-            type: Number,
-            required: true
-        }
+        // id: {
+        //     type: Number,
+        //     required: true
+        // }
     },
+    // methods: {
+    //     add() {
+    //         const Obj = {id: this.id, value: this.num + 1};
+    //         bus.$emit('share', Obj);
+    //     },
+    //     sub() {
+    //         if(this.num == 1) return;
+    //         const Obj = {id: this.id, value: this.num - 1};
+    //         bus.$emit('share', Obj);
+    //     }
+    // }
     methods: {
         add() {
-            const Obj = {id: this.id, value: this.num + 1};
-            bus.$emit('share', Obj);
+            //通过自定义事件的方式,把最新的值传递给父组件
+            this.$emit('num-change-add', this.num + 1);
         },
         sub() {
-            if(this.num == 1) return;
-            const Obj = {id: this.id, value: this.num - 1};
-            bus.$emit('share', Obj);
+            this.$emit('num-change-sub', this.num - 1);
         }
     }
 }
